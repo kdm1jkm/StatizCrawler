@@ -1,7 +1,6 @@
-from email.iterators import body_line_iterator
 from bs4 import BeautifulSoup
 from urllib import request
-from prettytable import PrettyTable
+from texttable import Texttable
 from itertools import chain
 
 
@@ -80,10 +79,11 @@ class Parser:
         print(*map(lambda content: "|".join(content), self.contents), sep="\n\n")
 
     def __str__(self) -> str:
-        table = PrettyTable()
-        table.field_names = self.header
-        table.add_rows(self.contents)
-        return str(table)
+        table = Texttable()
+        table.set_max_width(0)
+        table.header(self.header)
+        table.add_rows(self.contents, header=False)
+        return table.draw()
 
 
 def parser_test():
