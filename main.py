@@ -1,3 +1,5 @@
+from datetime import datetime
+import os
 from parser import Parser
 
 
@@ -29,7 +31,27 @@ def parser_test():
 def main():
     url = input("url을 입력하세요: ")
     parser = Parser(url)
+    print(*map(lambda i: f"{i[0]}: {i[1]}", enumerate(parser.header)), sep=" " * 2)
+
+    indexes = []
+    while True:
+        index = input("열 번호 입력: ")
+        if index == "":
+            break
+        indexes.append(int(index))
+
+    parser.select_columns(indexes)
+    print(parser)
+
+    if not os.path.isdir("./extracted"):
+        os.mkdir("./extracted")
+    with open(
+        f"extracted/{datetime.now().strftime('%Y%m%d-%H%M%S')}.csv",
+        "w",
+        encoding="euc-kr",
+    ) as f:
+        f.write(parser.to_csv_string())
 
 
 if __name__ == "__main__":
-    parser_test()
+    main()

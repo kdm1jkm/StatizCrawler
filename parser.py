@@ -26,7 +26,7 @@ class Parser:
                     "colspan": int(header.attrs["colspan"])
                     if "colspan" in header.attrs.keys()
                     else 1,
-                    "content": header.text,
+                    "content": header.text.strip(),
                 }
                 for header in header_row.select("th")
             ]
@@ -63,7 +63,7 @@ class Parser:
     def extract_contents(self):
         tables = self.bs.select("table")
         contents = [
-            [data.text for data in row.select("td")]
+            [data.text.strip() for data in row.select("td")]
             for table in tables
             # if "class" in table.attrs.keys() and "table" in table.attrs["class"]
             for row in table.select("tr")
@@ -77,6 +77,16 @@ class Parser:
 
     def print_contents(self):
         print(*map(lambda content: "|".join(content), self.contents), sep="\n\n")
+
+    def select_columns(self, indexes):
+        self.header = [self.header[index] for index in indexes]
+        self.contents = [
+            [content[index] for index in indexes] for content in self.contents
+        ]
+
+    def to_csv_string(self) -> str:
+        datas = [self.header, *self.contents]
+        return "\n".join([",".join(data) for data in datas])
 
     def __str__(self) -> str:
         table = Texttable()
