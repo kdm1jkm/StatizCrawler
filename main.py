@@ -64,7 +64,7 @@ class Parser:
         print(*self.header, sep=" ")
 
 
-def main():
+def test():
     urls = [
         "http://www.statiz.co.kr/stat.php?opt=0&sopt=0&re=0&ys=2022&ye=2022&se=0&te=&tm=&ty=0&qu=auto&po=0&as=&ae=&hi=&un=&pl=&da=1&o1=WAR_ALL_ADJ&de=1&lr=0&tr=&cv=&ml=1&sn=30&si=&cn=",
         "http://www.statiz.co.kr/player.php?opt=1&sopt=0&name=%EA%B3%A0%EC%9A%B0%EC%84%9D&birth=1998-08-06&re=1",
@@ -79,5 +79,10 @@ def main():
         print("-" * 50, end="\n\n")
 
 
+def main():
+    url = input("url을 입력하세요")
+    parser = Parser(url)
+
+
 if __name__ == "__main__":
-    main()
+    test()
